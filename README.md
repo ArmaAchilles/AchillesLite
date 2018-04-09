@@ -13,9 +13,9 @@ Check [_Achilles_](https://github.com/ArmaAchilles/AresModAchillesExpansion) for
 
 ## Installation
 There are three steps. If you know how to get the debug console, just jump to the last step.
-- [Become Admin](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#Become-Admin)
--
--
+- [Become Admin](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#become-admin)
+- [Get Debug Console](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#get-debug-console)
+- [Initialize Achillite](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#initialize-achillite)
 ### Become Admin
 ### Get Debug Console
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/MissionParams.jpg?raw=true)
