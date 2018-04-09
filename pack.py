@@ -40,4 +40,6 @@ if __name__ == "__main__":
 				for file in os.scandir(entry.path):
 					with open(file.path, "r") as inputStream:
 						CopyPreprocessedFunctions(inputStream, outputStream)
+	# -- to do: load modules
+	# -- to do: load init.sqf
 							
