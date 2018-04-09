@@ -18,7 +18,7 @@ There are three steps. If you know how to get the debug console, just jump to th
 - [Initialize Achillite](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#initialize-achillite)
 ### Become Admin
 - You have to be voted as admin.
-- You can vote someone as admin by typing `#vote admin username` in the chat.
+- You can vote someone as admin by typing `#vote admin <username>` in the chat (`<username>` is the user name).
 ### Get Debug Console
 - You have to change the mission parameters. This can **only** be done at the beginning of the mission!
 - To set up a new mission type in `#missions` in the chat.
