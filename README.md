@@ -12,6 +12,7 @@ Check [_Achilles_](https://github.com/ArmaAchilles/AresModAchillesExpansion) for
 **Achillite** is a lite version of _Achilles_ packed in a single script to be run with an admin console. Hence, no add-on is needed at all. It only provides a few selected modules from _Achilles_.
 
 ## Installation
+### Overview
 There are three steps. If you know how to get the debug console, just jump to the last step.
 - [Become Admin](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#become-admin)
 - [Get Debug Console](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#get-debug-console)
