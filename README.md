@@ -13,6 +13,7 @@ Check [_Achilles_](https://github.com/ArmaAchilles/AresModAchillesExpansion) for
 
 ## Installation
 ### Overview
+These instructions are a working example for the official Zeus game master missions.
 There are three steps. If you know how to get the debug console, just jump to the last step.
 - [Become Admin](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#become-admin)
 - [Get Debug Console](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#get-debug-console)
