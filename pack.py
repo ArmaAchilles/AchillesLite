@@ -2,7 +2,7 @@
 import os, sys
 import re
 
-pathToFullCode = "fullcode.sqf"
+pathToFullCode = "fullcode.min.sqf"
 
 def CopyPreprocessedFunctions(inputStream, outputStream):
 	ppContent = postprocessContent(inputStream.read())
