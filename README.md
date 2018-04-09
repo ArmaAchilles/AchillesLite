@@ -22,6 +22,7 @@ There are three steps. If you know how to get the debug console, just jump to th
 - To set up a new mission type in `#missions` in the chat.
 - When you are back in the lobby, press on the "Parameters" button.
 - Set the "Admin debug console" option to "Enabled" (see picture below).
+
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/MissionParams.jpg?raw=true)
 ### Initialize Achillite
 - Place an unit and double click on it.
