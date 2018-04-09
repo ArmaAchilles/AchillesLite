@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://github.com/ArmaAchilles/AresModAchillesExpansion/blob/master/Pictures/logo/achilles_logo_whiteBackground.png" width="140" alt="AMAE Logo">
     <h1 align="center">Achillite (Achilles Lite)</h1>
-    <h2 align="center">The lite version of Achille for public Zeus</h2>
+    <h4 align="center">The lite version of Achille for public Zeus</h4>
 </p>
 
 ## Introduction
