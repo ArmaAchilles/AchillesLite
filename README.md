@@ -18,10 +18,16 @@ There are three steps. If you know how to get the debug console, just jump to th
 - [Initialize Achillite](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#initialize-achillite)
 ### Become Admin
 ### Get Debug Console
+- You have to change the mission parameters. This can **only** be done at the beginning of the mission!
+- To set up a new mission type in `#missions` in the chat.
+- When you are back in the lobby, press on the "Parameters" button.
+- Set the "Admin debug console" option to "Enabled" (see picture below).
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/MissionParams.jpg?raw=true)
 ### Initialize Achillite
 - Place an unit and double click on it.
 - Copy the code from the link: [fullcode.min.sqf](
 https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.min.sqf).
-- Paste it in the Exec Code section.
+- Paste it in the "Execute" box (see picture below).
+- Pro tip: You can select code you earlier executed with the combo box above the "Execute" box.
+
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/AchilliteInit.jpg?raw=true)
