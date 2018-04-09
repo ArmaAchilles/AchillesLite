@@ -1,7 +1,7 @@
 <p align="center">
     <img src="https://github.com/ArmaAchilles/AresModAchillesExpansion/blob/master/Pictures/logo/achilles_logo_whiteBackground.png" width="140" alt="AMAE Logo">
     <h1 align="center">Achillite (Achilles Lite)</h1>
-    <h4 align="center">The Lite Version of Achilles for Public Zeus</h4>
+    <h4 align="center">The Lite Version of Achilles for the Official Public Zeus Game Master Servers</h4>
 </p>
 
 ## Introduction
@@ -9,11 +9,10 @@
 **Ares Mod - Achilles Expansion**, better known as _Achilles_, is a gameplay modification for Arma 3. It expands the Zeus real-time editor with many new additions as well as provides bug fixes.
 Check [_Achilles_](https://github.com/ArmaAchilles/AresModAchillesExpansion) for more information.
 
-**Achillite** is a lite version of _Achilles_ packed in a single script to be run with an admin console. Hence, no add-on is needed at all. It only provides a few selected modules from _Achilles_.
+**Achillite** is a lite version of _Achilles_ packed in a single script to be run with an admin console. Hence, no add-on is needed at all. Note that it only provides a few selected modules from _Achilles_.
 
 ## Installation
 ### Overview
-These instructions are a working example for the official Zeus game master missions.
 There are three steps. If you know how to get the debug console, just jump to the last step.
 - [Become Admin](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#become-admin)
 - [Get Debug Console](https://github.com/ArmaAchilles/AchillesLite/blob/master/README.md/#get-debug-console)
