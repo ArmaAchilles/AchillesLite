@@ -1,0 +1,1 @@
+The whitelist.txt contains all Achilles modules that are available for Achillite.

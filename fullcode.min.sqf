@@ -1,1 +1,560 @@
-Achillite_fnc_registerCustomModule={};Achillite_fnc_showChooseDialog={};Achillite_fnc_test={BLACKLIST_WEAPONS=["FakeHorn","AmbulanceHorn","TruckHorn","CarHorn","SportCarHorn","BikeHorn","TruckHorn2","TruckHorn3","SmokeLauncher"];params[["_unit",objNull,[objNull]]];private _weaponsToFire=[];if(_unit isKindOf"Man")then{private _weapon=primaryWeapon _unit;private _availableMagazines=magazines _unit;if!(_weapon isEqualTo"")then{private _muzzleArray=[];{private _muzzle=_x;if(_muzzle!="SAFE")then{private _magazines=[];if(_muzzle=="this")then{_magazines=getArray(configFile>>"CfgWeapons">>_weapon>>"magazines")arrayIntersect _availableMagazines}else{_magazines=getArray(configFile>>"CfgWeapons">>_weapon>>_muzzle>>"magazines")arrayIntersect _availableMagazines};_magazines=_magazines select{(toLower getText(configFile>>"CfgMagazines">>_x>>"displayName")find"smoke")isEqualTo-1};if!(_magazines isEqualTo[])then{_muzzleArray pushBack[_muzzle,_magazines]}}}forEach getArray(configFile>>"CfgWeapons">>_weapon>>"muzzles");if!(_muzzleArray isEqualTo[])then{_weaponsToFire pushBack[_weapon,_muzzleArray]}}}else{private _turrets=[[-1]]+(allTurrets _unit);{private _turretPath=_x;private _availableMagazines=_unit magazinesTurret _turretPath;if(not isNull(_unit turretUnit _turretPath))then{private _weaponArray=[];{private _weapon=_x;if!(_weapon isEqualTo""||_weapon in BLACKLIST_WEAPONS)then{private _muzzleArray=[];{private _muzzle=_x;private _magazines=[];if(_muzzle=="this")then{_magazines=getArray(configFile>>"CfgWeapons">>_weapon>>"magazines")arrayIntersect _availableMagazines}else{_magazines=getArray(configFile>>"CfgWeapons">>_weapon>>_muzzle>>"magazines")arrayIntersect _availableMagazines};if!(_magazines isEqualTo[])then{_muzzleArray pushBack[_muzzle,_magazines]}}forEach getArray(configFile>>"CfgWeapons">>_weapon>>"muzzles");if!(_muzzleArray isEqualTo[])then{_weaponsToFire pushBack[[_weapon,_turretPath],_muzzleArray]}}}forEach(_unit weaponsTurret _turretPath)}}forEach _turrets};_weaponsToFire};
+if(Ares_var_initDone)exitWith{systemChat"Waring: Achillite was already initialized!"};Ares_var_initDone=true;Ares_fnc_IsZeus={ 
+
+private _candidateUnit = _this select 0;
+
+_candidateUnit in (allCurators apply {getAssignedCuratorUnit _x});
+};Ares_fnc_ShowChooseDialog={ 
+disableSerialization;
+
+private ["_defaultChoice","_defaultVariableId"];
+params [["_titleText", "", [""]], ["_choicesArray", ["placeholder"], ["", []]], ["_ResourceScript", "", [""]]];                                    
+
+ 
+createDialog "Ares_Dynamic_Dialog";
+private _dialog = findDisplay  133798;
+
+ 
+private _row_heights = _choicesArray apply
+{
+	_choices = _x select 1;
+	switch (_choices) do
+	{
+		case "ALLSIDE"; case "SIDE": { 4.1 *  (0.04)};
+		case "MESSAGE": { (2.1 *  (0.04)) + 4* (1 *  (0.04))};
+		default { (2.1 *  (0.04))};
+	};
+};
+private _tot_height = _row_heights call Achilles_fnc_sum;
+if (_tot_height >  (29.4 *  (0.04) +  (0))) then {_tot_height =  (29.4 *  (0.04) +  (0))};
+
+private _yCoord = _tot_height +  (2.1 *  (0.04)) +  0.4 *  (0.04);
+
+ 
+private _ctrl_group = _dialog displayCtrl  7000;
+private _pos = ctrlPosition _ctrl_group;
+_pos set [3,_yCoord-(_pos select 1)];
+_ctrl_group ctrlSetPosition _pos;
+_ctrl_group ctrlCommit 0;
+
+_yCoord = _yCoord +  0.4 *  (0.04);
+
+{
+	private _bottomCtrl = _dialog displayCtrl _x;
+	_pos = ctrlPosition _bottomCtrl;
+	_pos set [1,_yCoord];
+	_bottomCtrl ctrlSetPosition _pos;
+	_bottomCtrl ctrlCommit 0;
+} forEach  [2010,3000,3010];
+
+_yCoord = _yCoord +  (2.1 *  (0.04));
+
+ 
+private _background = _dialog displayCtrl  2000;
+_pos = ctrlPosition _background;
+_pos set [3,_yCoord-(_pos select 1)];
+_background ctrlSetPosition _pos;
+_background ctrlCommit 0;
+
+ 
+if (_titleText != "") then
+{
+	private _ctrlTitle = _dialog displayCtrl  1000;
+	_ctrlTitle ctrlSetText _titleText;
+
+};
+
+ 
+_yCoord =  (0 *  (0.04) +  (0));
+
+ 
+private _titleText_varName = _titleText call Achilles_fnc_TextToVariableName;
+private _titleVariableIdentifier = format ["Ares_ChooseDialog_DefaultValues_%1", _titleText_varName];
+{
+    _x params ["_choiceName", "_choices", ["_defaultChoice", 0], ["_force_default", false, [false]]];
+
+	private _choiceName_varName = _choiceName call Achilles_fnc_TextToVariableName;
+
+	 
+	if (_titleText != "" &&  !_force_default) then
+	{
+		_defaultVariableId = format["%1_%2", _titleVariableIdentifier, _forEachIndex];
+		_defaultChoice = uiNamespace getVariable [_defaultVariableId, _defaultChoice];
+	};
+
+	 
+	private _choiceLabel = _dialog ctrlCreate ["RscText",  (10000) + _forEachIndex, _ctrl_group];
+	_choiceLabel ctrlSetText _choiceName;
+	_choiceLabel ctrlSetBackgroundColor [0,0,0,0.6];
+
+	if (_choices isEqualType []) then
+	{
+
+		 
+		_choiceLabel ctrlSetPosition [ (0.5 *  (0.025) +  (0)), _yCoord,  (39 *  (0.025)),  (2 *  (0.04))];
+		_choiceLabel ctrlCommit 0;
+
+		 
+		private _choiceCombo = _dialog ctrlCreate ["RscCombo",  (20000) + _forEachIndex, _ctrl_group];
+		_choiceCombo ctrlSetPosition [ (16 *  (0.025) +  (0)), _yCoord+ (0.5 *  (0.04) +  (0)),  (22.5 *  (0.025)),  (1 *  (0.04))];
+		_choiceLabel ctrlSetBackgroundColor [0,0,0,0.5];
+		_choiceCombo ctrlCommit 0;
+		{
+			_choiceCombo lbAdd _x;
+		} forEach _choices;
+
+		 
+
+		private _comboScript = "";
+
+		if (_ResourceScript != "") then
+		{
+			 
+			uiNamespace setVariable [format["Ares_ChooseDialog_ReturnValue_%1",_forEachIndex], _defaultChoice];
+			_comboScript = format["([""%1""] + _this) call %2;",_forEachIndex,_ResourceScript]
+		} else
+		{
+			 
+			_defaultChoice = [0, _defaultChoice] select (_defaultChoice isEqualType 0);
+			_defaultChoice = [(lbSize _choiceCombo) - 1, _defaultChoice] select (_defaultChoice < lbSize _choiceCombo);
+			_choiceCombo lbSetCurSel _defaultChoice;
+			uiNamespace setVariable [format["Ares_ChooseDialog_ReturnValue_%1",_forEachIndex], _defaultChoice];
+
+			_comboScript = "uiNamespace setVariable [format['Ares_ChooseDialog_ReturnValue_%1'," + str (_forEachIndex) + "], _this select 1];"
+		};
+		_choiceCombo ctrlSetEventHandler ["LBSelChanged", _comboScript];
+
+		 
+		_yCoord = _yCoord +  (2.1 *  (0.04));
+	}
+	else
+	{
+		private _choices = toUpper _choices;
+		if (_choices in ["ALLSIDE","SIDE"]) then
+		{
+			 
+			_choiceLabel ctrlSetPosition [ 0.5 *  (0.025) +  (0),_yCoord, 39 *  (0.025), 4 *  (0.04)];
+			_choiceLabel ctrlCommit 0;
+
+			 
+			private _ctrl = _dialog ctrlCreate ["RscText",  (20000) + _forEachIndex, _ctrl_group];
+			_yCoord = _yCoord +  0.5 *  (0.04);
+			_ctrl ctrlSetBackgroundColor [1,1,1,0.1];
+			_ctrl ctrlSetPosition [ 8 *  (0.025) +  (0),_yCoord, 31 *  (0.025), 3 *  (0.04)];
+			_ctrl ctrlCommit 0;
+
+			 
+			_yCoord = _yCoord +  0.5 *  (0.04);
+			private _xCoord =  12.5 *  (0.025) +  (0);
+			{
+				private _icon = _x;
+				_ctrl = _dialog ctrlCreate ["RscActivePicture",  (12000) + 10*_forEachIndex, _ctrl_group];
+				_ctrl ctrlSetBackgroundColor [1,1,1,1];
+				_ctrl ctrlSetActiveColor [1,1,1,1];
+				private _side_name = if (_foreachindex == 0) then {"ZEUS"} else {toUpper ((_foreachindex - 1) call bis_fnc_sideName)};
+				_ctrl ctrlSetTooltip _side_name;
+				_ctrl ctrlSetText _icon;
+				_ctrl ctrlSetPosition [_xCoord,_yCoord, 2.4 *  (0.025), 2 *  (0.04)];
+				_ctrl ctrlCommit 0;
+				_xCoord = _xCoord + 4* (0.025);
+			} forEach ["\a3\Ui_F_Curator\Data\Logos\arma3_curator_eye_64_ca.paa","\a3\Ui_F_Curator\Data\Displays\RscDisplayCurator\side_east_ca.paa","\a3\Ui_F_Curator\Data\Displays\RscDisplayCurator\side_west_ca.paa","\a3\Ui_F_Curator\Data\Displays\RscDisplayCurator\side_guer_ca.paa","\a3\Ui_F_Curator\Data\Displays\RscDisplayCurator\side_civ_ca.paa"];
+
+			if (_choices == "SIDE") then
+			{
+				 
+				_ctrl = _dialog displayCtrl 12000;
+				_ctrl ctrlShow false;
+				_defaultChoice = [1, _defaultChoice] select (_defaultChoice isEqualType 0 and !(_defaultChoice in [-1,0]));
+			} else
+			{
+				 
+				_defaultChoice = [1, _defaultChoice] select (_defaultChoice isEqualType 0 and _defaultChoice != -1);
+			};
+
+			["onLoad",_dialog,_forEachIndex,_defaultChoice] call Achilles_fnc_sideTab;
+
+			_yCoord = _yCoord +  3.1 *  (0.04);
+		} else
+		{
+			private _add_height = [0, 4* (1 *  (0.04))] select (_choices == "MESSAGE");
+
+			 
+			_choiceLabel ctrlSetPosition [ (0.5 *  (0.025) +  (0)), _yCoord,  (39 *  (0.025)),  (2 *  (0.04)) + _add_height];
+			_choiceLabel ctrlCommit 0;
+
+			 
+			private _ctrl_type = switch (_choices) do
+			{
+				case "SLIDER": {"RscXSliderH"};
+				case "MESSAGE": {"RscAchillesMessageEdit"};
+				default {"RscAchillesEdit"};
+			};
+			private _ctrl = _dialog ctrlCreate [_ctrl_type,  (20000) + _forEachIndex, _ctrl_group];
+			_ctrl ctrlSetPosition [ (16 *  (0.025) +  (0)), _yCoord+ (0.5 *  (0.04) +  (0)),  (22.5 *  (0.025)),  (1 *  (0.04)) + _add_height];
+			_ctrl ctrlCommit 0;
+			if (_choices == "SLIDER") then
+			{
+				 
+				_defaultChoice = [0, _defaultChoice] select (_defaultChoice isEqualType 0 and _defaultChoice != -1);
+
+				_ctrl sliderSetRange [0,1];
+				_ctrl ctrlSetBackgroundColor [0, 0, 0, 1];
+				_ctrl sliderSetPosition _defaultChoice;
+				_ctrl ctrlSetEventHandler ["KeyUp", "uiNamespace setVariable [format['Ares_ChooseDialog_ReturnValue_%1'," + str (_forEachIndex) + "], sliderPosition (_this select 0)];"];
+				_ctrl ctrlSetEventHandler ["MouseButtonUp", "uiNamespace setVariable [format['Ares_ChooseDialog_ReturnValue_%1'," + str (_forEachIndex) + "], sliderPosition (_this select 0)];"];
+
+			} else
+			{
+				 
+				_defaultChoice = ["", _defaultChoice] select (_defaultChoice isEqualType "");
+
+				_ctrl ctrlSetText _defaultChoice;
+				_ctrl ctrlSetBackgroundColor [0, 0, 0, 0];
+				_ctrl ctrlSetEventHandler ["KeyUp", "uiNamespace setVariable [format['Ares_ChooseDialog_ReturnValue_%1'," + str (_forEachIndex) + "], ctrlText (_this select 0)];"];
+			};
+			_ctrl ctrlCommit 0;
+
+			uiNamespace setVariable [format["Ares_ChooseDialog_ReturnValue_%1",_forEachIndex], _defaultChoice];
+			 
+			_yCoord = _yCoord +  (2.1 *  (0.04)) + _add_height;
+		};
+	};
+} forEach _choicesArray;
+
+uiNamespace setVariable ["Ares_ChooseDialog_Result", -1];
+
+if (_ResourceScript != "") then {call compile format["[""LOADED""] call %1;",_ResourceScript]};
+
+Ares_var_showChooseDialog = true;
+_dialog displayAddEventHandler ["unload",{Ares_var_showChooseDialog = nil}];
+waitUntil { isNil "Ares_var_showChooseDialog" };
+
+if (_ResourceScript != "") then {call compile format["[""UNLOAD""] call %1;",_ResourceScript]};
+
+ 
+if (uiNamespace getVariable "Ares_ChooseDialog_Result" == 1) exitWith
+{
+	private _returnValue = [];
+	{
+		_returnValue pushBack (uiNamespace getVariable (format["Ares_ChooseDialog_ReturnValue_%1",_forEachIndex]));
+	}forEach _choicesArray;
+
+	 
+	if (_titleText != "") then
+	{
+		{
+			_defaultVariableId = format["%1_%2", _titleVariableIdentifier, _forEachIndex];
+			uiNamespace setVariable [_defaultVariableId, _x];
+		} forEach _returnValue;
+	};
+	_returnValue
+};
+[]
+};Ares_fnc_ShowZeusMessage={private _message = _this select 0;
+if (count _this > 1) then
+{
+	_message = format _this;
+};
+
+[objNull, _message] call bis_fnc_showCuratorFeedbackMessage;
+};Ares_fnc_init={  
+ 
+
+disableSerialization;
+
+waitUntil {([player] call Ares_fnc_IsZeus)};
+
+ 
+waitUntil {!isNull (findDisplay  312)};
+
+ 
+(getAssignedCuratorLogic player) addEventHandler ["CuratorObjectPlaced", {_this call Ares_fnc_onModulePlaced}];
+
+ 
+ 
+ 
+ 
+while {true} do {
+	 
+	waitUntil {sleep 1; ([player] call Ares_fnc_IsZeus)};
+
+	 
+	waitUntil {sleep 1; !isNull (findDisplay  312)};
+	
+	 
+	private _display = findDisplay  312;
+	private _ctrl = _display displayCtrl  280;
+	 
+	_ctrl ctrlAddEventHandler ["TreeSelChanged", {params["","_path"]; if !(_path isEqualTo []) then {missionNamespace setVariable ["Ares_var_moduleTreeCurSel",_path]}}];
+	 
+	[] call Ares_fnc_onModuleTreeLoad;
+
+	 
+	waitUntil {sleep 1; isNull (findDisplay  312)};
+};
+
+Achilles_fnc_sum =
+{
+	private _array = _this;
+	private _sum = 0;
+
+	{
+		_sum = _sum + _x;
+	} forEach _array;
+	_sum
+};
+
+Achilles_fnc_TextToVariableName =
+{
+	if (isNil "Achilles_var_old_special_char_unicode") then
+	{
+		Achilles_var_old_special_char_unicode = [];
+		Achilles_var_new_special_char_unicode = [];
+
+		private _old_letters = [" ",":","(",")","[","]"];
+		private _new_letters = ["_","_","_","_","_","_"];
+
+		switch (language) do
+		{
+			case "German":
+			{
+				_old_letters append ["Ä","ä","Ö","ö","Ü","ü"];
+				_new_letters append ["A","a","O","o","U","u"];
+			};
+			case "French":
+			{
+				_old_letters append ["é","è","à","ç","î","ë","ê","ù","û","ô","â","ï","ÿ"];
+				_new_letters append ["e","e","a","c","i","e","e","u","u","o","a","i","y"];
+			};
+			case "Russian":
+			{
+				_old_letters append ["А","а","Б","б","В","в","Г","г","Д","д","Е","е","Ё","ё","Ж","ж","З","з","И","и","Й","й","К","к","Л","л","М","м","Н","н","О","о","П","п","Р","р","С","с","Т","т","У","у","Ф","ф","Х","х","Ц","ц","Ч","ч","Ш","ш","Щ","щ","Ъ","ъ","Ы","ы","Ь","ь","Э","э","Ю","ю","Я","я"];
+				_new_letters append ["A","a","B","b","V","v","G","g","D","d","E","e","E","e","Z","z","Z","z","I","i","J","j","K","k","L","l","M","m","N","n","O","o","P","p","R","r","S","s","T","t","U","u","F","f","C","c","C","c","C","c","S","s","S","s","_","_","Y","y","_","_","E","e","U","u","J","j"];
+			};
+		};
+
+		for "_i" from 0 to ((count _old_letters) - 1) do
+		{
+			Achilles_var_old_special_char_unicode append (toArray (_old_letters select _i));
+			Achilles_var_new_special_char_unicode append (toArray (_new_letters select _i));
+		};
+	};
+
+	private _input_unicode = toArray _this;
+
+	for "_i" from 0 to ((count _input_unicode) - 1) do
+	{
+		private _letter_index = Achilles_var_old_special_char_unicode find (_input_unicode select _i);
+		if (_letter_index != -1) then
+		{
+			_input_unicode set [_i,Achilles_var_new_special_char_unicode select _letter_index];
+		};
+	};
+	toString _input_unicode
+}};Ares_fnc_onModulePlaced={  
+
+params ["_curator", "_logic"];
+if (typeOf _logic == "module_f") then
+{
+	 
+	Ares_CuratorObjectPlaced_UnitUnderCursor = curatorMouseOver;
+	 
+	private _display = findDisplay  312;
+	private _ctrl = _display displayCtrl  280;
+	 
+	private _path = missionNamespace getVariable ["Ares_var_moduleTreeCurSel", []];
+	private _moduleName = _ctrl tvText _path;
+	private _fnc = _curator getVariable [_moduleName, {}];
+	 
+	[position _logic, Ares_CuratorObjectPlaced_UnitUnderCursor select 1, _logic] spawn _fnc;
+}};Ares_fnc_onModuleTreeLoad={  
+
+disableSerialization;
+
+ 
+private _display = findDisplay  312;
+private _ctrl = _display displayCtrl  280;
+ 
+private _categoryList = [];
+
+ 
+private _i = 0;
+for "_i" from 0 to ((_ctrl tvCount []) - 1) do
+{
+	private _categoryName = _ctrl tvText [_i];
+	_categoryList pushBack _categoryName;
+};
+
+ 
+systemChat str [isNil "Ares_var_modules", Ares_var_modules];
+{
+	_x params ["_categoryName", "_modules"];
+	systemChat str _categoryList;
+	private _categoryIndex = _categoryList find _categoryName;
+	if (_categoryIndex isEqualTo -1) then
+	{
+		 
+		_ctrl tvAdd [[], _categoryName];
+		_categoryIndex = count _categoryList;
+		_categoryList pushBack _categoryName;
+	};
+	 
+	{
+		private _moduleName = _x;
+		private _moduleIndex = _ctrl tvAdd [[_categoryIndex], _moduleName];
+		private _modulePath = [_categoryIndex, _moduleIndex];
+		_ctrl tvSetData [_modulePath, "module_f"];
+	} forEach _modules;
+} forEach Ares_var_modules;
+
+
+ 
+_ctrl tvSort [[], false];
+for "_i" from 0 to ((_ctrl tvCount []) - 1) do {_ctrl tvSort [[_i], false]};
+};Ares_fnc_registerCustomModule={ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+params ["_categoryName", "_moduleDisplayName", "_codeBlock"];
+
+if (isNil "Ares_Custom_Modules") then { Ares_Custom_Modules = [] };
+
+private _replacedExistingEntry = false;
+{
+	if (_categoryName == (_x select 0) and _moduleDisplayName == (_x select 1)) exitWith
+	{
+		_replacedExistingEntry = true;
+		_x set [2, _codeBlock];
+	};
+} forEach Ares_Custom_Modules;
+
+if (!_replacedExistingEntry) then
+{
+	disableSerialization;
+
+	 
+	private _display = findDisplay IDD_RSCDISPLAYCURATOR;
+
+	 
+	private _index = count Ares_Custom_Modules;
+	private _moduleClassName = format ["Ares_Module_User_Defined_%1", _index];
+	Ares_Custom_Modules pushBack [_categoryName, _moduleDisplayName, _codeBlock];
+
+	 
+	if(isNull _display) exitWith {};
+
+	 
+	private _ctrl = _display displayCtrl IDC_RSCDISPLAYCURATOR_CREATE_MODULES;
+	private _category_list = [_ctrl,Ares_category_list,_categoryName,_moduleDisplayName,_moduleClassName,_index] call Achilles_fnc_AppendToModuleTree;
+
+	 
+	_ctrl tvSort [[], false];
+	for "_i" from 0 to ((_ctrl tvCount []) - 1) do {_ctrl tvSort [[_i], false]};
+
+	 
+	_category_list sort true;
+	Ares_category_list = _category_list;
+};
+};Ares_var_modules=[['Curator',['Hide Zeus','STR_AMAE_Hint']]];{(getAssignedCuratorLogic player)setVariable[_x select 0,_x select 1]}forEach[["Hide Zeus",{private _deleteModuleOnExit=true;private _logic=param[3]; 
+
+private _dialogResult =
+[
+	"Hide Zeus",
+	[
+		[
+			"Hide Zeus", ["Yes", "No"]
+		]
+	]
+] call Ares_fnc_ShowChooseDialog;
+
+if (_dialogResult isEqualTo []) exitWith {};
+
+private _invisible = (_dialogResult select 0) == 0;
+private _display_text = ["Zeus is now visible", "Zeus is now hidden"] select _invisible;
+
+private _curatorLogic = getAssignedCuratorLogic player;
+if (_invisible and !(isObjectHidden player)) then
+{
+	[player, true] remoteExecCall ["hideObjectGlobal",2];
+	player allowDamage false;
+	player setCaptive true;
+	_curatorLogic setVariable ["showNotification", true];
+
+	private _eagle = _curatorLogic getVariable ["bird", objNull];
+	if (!isNull _eagle) then
+	{
+		[_eagle, true] remoteExecCall ["hideObjectGlobal",2];
+		[_eagle, false] remoteExecCall ["enableSimulationGlobal",2];
+	};
+}
+else
+{
+	if (!_invisible and (isObjectHidden player)) then
+	{
+		[player, false] remoteExecCall ["hideObjectGlobal",2];
+		player allowDamage true;
+		player setCaptive false;
+		_curatorLogic setVariable ["showNotification", false];
+
+		private _eagle = _curatorLogic getVariable ["bird", objNull];
+		if (!isNull _eagle) then
+		{
+			[_eagle, true] remoteExecCall ["enableSimulationGlobal",2];
+			[_eagle, false] remoteExecCall ["hideObjectGlobal",2];
+		};
+	};
+};
+
+[_display_text] call Ares_fnc_ShowZeusMessage; 
+;if(_deleteModuleOnExit)then{deleteVehicle _logic}}],["STR_AMAE_Hint",{private _deleteModuleOnExit=true;private _logic=param[3]; 
+
+private _dialogResult =
+[
+	"Hint",
+	[
+		[
+			"STR_AMAE_HINTTYPE", ["Hint",  "Hint Silent", "Hint Cadet"]
+		],
+		[
+			"Message", "MESSAGE"
+		]	
+	]
+] call Ares_fnc_ShowChooseDialog;
+
+if (_dialogResult isEqualTo []) exitWith {};
+
+_dialogResult params ["_hintType", "_message"];
+
+switch (_hintType) do 
+{
+	case 0: 
+	{
+		[parseText _message] remoteExecCall ["hint", 0];
+	};
+	case 1: 
+	{
+		[parseText _message] remoteExecCall ["hintSilent", 0];
+	};
+	case 2: 
+	{
+		[parseText _message] remoteExecCall ["hintCadet", 0];
+	};
+}; 
+;if(_deleteModuleOnExit)then{deleteVehicle _logic}}]];[]spawn Ares_fnc_init;
