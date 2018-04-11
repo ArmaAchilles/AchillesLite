@@ -30,7 +30,7 @@ There are three steps. If you know how to get the debug console, just jump to th
 ### Initialize Achillite
 - Place an unit and double click on it.
 - Copy the code from the link: [fullcode.min.sqf](
-https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.min.sqf).
+https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.min.sqf) (use CTRL+A; CTRL+C / CTRL+V).
 - Paste it in the "Execute" box (see picture below).
 - Pro tip: You can select code you earlier executed with the combo box above the "Execute" box.
 
