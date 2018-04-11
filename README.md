@@ -29,7 +29,7 @@ There are three steps. If you know how to get the debug console, just jump to th
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/MissionParams.jpg?raw=true)
 ### Initialize Achillite
 - Place an unit and double click on it.
-- Copy the code from one of the links (use CTRL+A; CTRL+C; CTRL+V):
+- Copy the code from one of the links below (use CTRL+A; CTRL+C; CTRL+V):
 	- English: [fullcode.en.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.en.min.sqf)
 	- German: [fullcode.de.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.de.min.sqf)
 	- French: [fullcode.fr.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.fr.min.sqf)
