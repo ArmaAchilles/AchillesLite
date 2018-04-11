@@ -18,10 +18,8 @@ for "_i" from 0 to ((_ctrl tvCount []) - 1) do
 };
 
 // Add Achillite modules
-systemChat str [isNil "Ares_var_modules", Ares_var_modules];
 {
 	_x params ["_categoryName", "_modules"];
-	systemChat str _categoryList;
 	private _categoryIndex = _categoryList find _categoryName;
 	if (_categoryIndex isEqualTo -1) then
 	{
@@ -36,6 +34,7 @@ systemChat str [isNil "Ares_var_modules", Ares_var_modules];
 		private _moduleIndex = _ctrl tvAdd [[_categoryIndex], _moduleName];
 		private _modulePath = [_categoryIndex, _moduleIndex];
 		_ctrl tvSetData [_modulePath, "module_f"];
+		_ctrl tvSetPicture [_modulePath, "\a3\Ui_F_Curator\Data\Logos\arma3_curator_eye_64_ca.paa"];
 	} forEach _modules;
 } forEach Ares_var_modules;
 

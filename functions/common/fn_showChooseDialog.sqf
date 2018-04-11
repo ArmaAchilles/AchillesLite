@@ -38,7 +38,7 @@ if ((count _this) == 2 && (_choicesArray select 0) isEqualType "") then
 #define GtC_W(GRID)				GRID * GUI_GRID_W
 #define GtC_H(GRID)				GRID * GUI_GRID_H
 
-#define DYNAMIC_GUI_IDD			133798
+#define DYNAMIC_GUI_IDD			-1
 #define DYNAMIC_TITLE_IDC		1000
 #define DYNAMIC_BG_IDC			2000
 #define DYNAMIC_CTRL_GROUP		7000
@@ -69,8 +69,7 @@ if ((count _this) == 2 && (_choicesArray select 0) isEqualType "") then
 #define SIDE_BASE_IDC			(12000)
 
 // Bring up the dialog frame we are going to add things to.
-createDialog "Ares_Dynamic_Dialog";
-private _dialog = findDisplay DYNAMIC_GUI_IDD;
+private _dialog = [] call Ares_fnc_Dynamic_Dialog;
 
 // translate the bottom line of the dialog
 private _row_heights = _choicesArray apply
@@ -244,8 +243,8 @@ private _titleVariableIdentifier = format ["Ares_ChooseDialog_DefaultValues_%1",
 			private _ctrl_type = switch (_choices) do
 			{
 				case "SLIDER": {"RscXSliderH"};
-				case "MESSAGE": {"RscAchillesMessageEdit"};
-				default {"RscAchillesEdit"};
+				case "MESSAGE": {"RscEditMulti"};
+				default {"RscEdit"};
 			};
 			private _ctrl = _dialog ctrlCreate [_ctrl_type, BASE_IDC_CTRL + _forEachIndex, _ctrl_group];
 			_ctrl ctrlSetPosition [COMBO_COLUMN_X, _yCoord+LABEL_COMBO_DELTA_Y, COMBO_WIDTH, COMBO_HEIGHT + _add_height];

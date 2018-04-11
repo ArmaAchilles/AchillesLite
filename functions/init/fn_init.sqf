@@ -30,32 +30,6 @@ _display displayAddEventHandler ["KeyDown", { _this call Ares_fnc_HandleRemoteKe
 (getAssignedCuratorLogic player) setVariable ["Test", {systemChat str _this; systemChat str Ares_CuratorObjectPlaced_UnitUnderCursor}];
 Ares_var_modules = [["Zeus",["Test"]]];
 */
-// run during mission
-while {true} do {
-	// Wait for the player to become zeus again (if they're not - eg. if on dedicated server and logged out)
-	waitUntil {sleep 1; ([player] call Ares_fnc_IsZeus)};
-
-	//Wait for the curator screen to be displayed
-	waitUntil {sleep 1; !isNull (findDisplay IDD_RSCDISPLAYCURATOR)};
-	
-	// get module tree control
-	private _display = findDisplay IDD_RSCDISPLAYCURATOR;
-	private _ctrl = _display displayCtrl IDC_RSCDISPLAYCURATOR_CREATE_MODULES;
-	// set module tree EHs
-	_ctrl ctrlAddEventHandler ["TreeSelChanged", {params["","_path"]; if !(_path isEqualTo []) then {missionNamespace setVariable ["Ares_var_moduleTreeCurSel",_path]}}];
-	/*
-	// key press variables;
-	Ares_Ctrl_Key_Pressed = false;
-	Ares_Shift_Key_Pressed = false;
-	
-	_display displayAddEventHandler ["KeyDown", { _this call Ares_fnc_HandleCuratorKeyPressed; }];
-	_display displayAddEventHandler ["KeyUp", { _this call Ares_fnc_HandleCuratorKeyReleased; }];
-	*/
-	[] call Ares_fnc_onModuleTreeLoad;
-
-	//Wait for the curator screen to be removed
-	waitUntil {sleep 1; isNull (findDisplay IDD_RSCDISPLAYCURATOR)};
-};
 
 Achilles_fnc_sum =
 {
@@ -115,4 +89,32 @@ Achilles_fnc_TextToVariableName =
 		};
 	};
 	toString _input_unicode
+};
+
+
+// run during mission
+while {true} do {
+	// Wait for the player to become zeus again (if they're not - eg. if on dedicated server and logged out)
+	waitUntil {sleep 1; ([player] call Ares_fnc_IsZeus)};
+
+	//Wait for the curator screen to be displayed
+	waitUntil {sleep 1; !isNull (findDisplay IDD_RSCDISPLAYCURATOR)};
+	
+	// get module tree control
+	private _display = findDisplay IDD_RSCDISPLAYCURATOR;
+	private _ctrl = _display displayCtrl IDC_RSCDISPLAYCURATOR_CREATE_MODULES;
+	// set module tree EHs
+	_ctrl ctrlAddEventHandler ["TreeSelChanged", {params["","_path"]; if !(_path isEqualTo []) then {missionNamespace setVariable ["Ares_var_moduleTreeCurSel",_path]}}];
+	/*
+	// key press variables;
+	Ares_Ctrl_Key_Pressed = false;
+	Ares_Shift_Key_Pressed = false;
+	
+	_display displayAddEventHandler ["KeyDown", { _this call Ares_fnc_HandleCuratorKeyPressed; }];
+	_display displayAddEventHandler ["KeyUp", { _this call Ares_fnc_HandleCuratorKeyReleased; }];
+	*/
+	[] call Ares_fnc_onModuleTreeLoad;
+
+	//Wait for the curator screen to be removed
+	waitUntil {sleep 1; isNull (findDisplay IDD_RSCDISPLAYCURATOR)};
 };

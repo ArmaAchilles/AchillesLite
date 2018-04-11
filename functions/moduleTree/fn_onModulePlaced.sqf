@@ -12,7 +12,13 @@ if (typeOf _logic == "module_f") then
 	// Get the function
 	private _path = missionNamespace getVariable ["Ares_var_moduleTreeCurSel", []];
 	private _moduleName = _ctrl tvText _path;
-	private _fnc = _curator getVariable [_moduleName, {}];
+	Ares_CuratorObjectPlaced_ModuleFunction = _curator getVariable [_moduleName, {}];
 	// execute the module function
-	[position _logic, Ares_CuratorObjectPlaced_UnitUnderCursor select 1, _logic] spawn _fnc;
+	[position _logic, Ares_CuratorObjectPlaced_UnitUnderCursor select 1, _logic] spawn 
+	{
+		private _deleteModuleOnExit = true;
+		private _logic = param [2];
+		_this call Ares_CuratorObjectPlaced_ModuleFunction;
+		if (_deleteModuleOnExit) then {deleteVehicle _logic};
+	};
 };
