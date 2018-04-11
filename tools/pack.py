@@ -3,15 +3,16 @@ import os, sys
 import re, glob
 import lxml.etree
 
-debug = True
+debug = False
 pathToFullCode = "../fullcode.min.sqf"
 
 def ppModuleFunctionCode(content):
 	ppContent = postprocessContent(content)
-	# add trailing semicolon
-	if ppContent[-1:] != ";":
-		ppContent += ";"
-	ppContent = "{{private _deleteModuleOnExit=true;private _logic=param[3];{}if(_deleteModuleOnExit)then{{deleteVehicle _logic}}}}".format(ppContent)
+	# remove trailing semicolon
+	if ppContent[-1:] == ";":
+		ppContent = ppContent[:-1]
+	# ppContent = "{{private _deleteModuleOnExit=true;private _logic=param[2];{}if(_deleteModuleOnExit)then{{deleteVehicle _logic}}}}".format(ppContent)
+	ppContent = "{{{}}}".format(ppContent)
 	return ppContent
 
 def findFunctionAndPrintCode(functionName):
@@ -92,7 +93,13 @@ if __name__ == "__main__":
 		# get whitelisted Achilles modules
 		with open("../modules/whitelist.txt") as whitelistStream:
 			whitelistedModules = [line.strip() for line in whitelistStream.read().splitlines()]
+		# get category localizations
+		with open("../modules/categoryLocalization.txt") as catLocStream:
+			categoryDict = {}
+			for key, value in re.extract(r"([^\W]+)\s*=\s*(.*)\b", catLocStream.read()):
+				categoryDict[key] = value
 		# load Achilles modules
+		print("[ HINT   ]: Adding modules ...")
 		groupedModuleNameList = []
 		moduleFunctionList = []
 		for cfgVehicleModuleFile in glob.iglob("../../AresModAchillesExpansion/@AresModAchillesExpansion/addons/*/*/cfgVehiclesModules*.hpp"):
@@ -100,10 +107,10 @@ if __name__ == "__main__":
 			if os.path.basename(os.path.dirname(cfgVehicleModuleFile)) == "Replacement":
 				continue
 			with open(cfgVehicleModuleFile, "r") as cfgStream:
-				print(os.path.basename(cfgVehicleModuleFile))
+				# print(os.path.basename(cfgVehicleModuleFile))
 				content = cfgStream.read()
 				# print(content)
-				categoryName = re.extract(r"Category\s*=\s*\"([^\W]*)\"", content, re.IGNORECASE)[0]
+				categoryKey = re.extract(r"Category\s*=\s*\"([^\W]*)\"", content, re.IGNORECASE)[0]
 				moduleNameList = []
 				for moduleClass, moduleAttributes in re.extract(r"\s+([^\W]+)[\s|\:]+[^\W]+\s+{([\s\S]*?)}", content):
 					if not moduleClass in whitelistedModules:
@@ -113,11 +120,12 @@ if __name__ == "__main__":
 					with open(moduleFunctionFolder + "/fn" + functionName + ".sqf", "r") as inputStream:
 						functionCode = ppModuleFunctionCode(inputStream.read())
 					moduleNameList.append(moduleName) 
-					moduleFunctionList.append('["{}",{}]'.format(moduleName, functionCode)) 
+					moduleFunctionList.append('["{}",{}]'.format(moduleName, functionCode))
+					print("[ HINT   ]", categoryDict[categoryKey], moduleName, sep=": ")
 				if len(moduleNameList) > 0:
-					groupedModuleNameList.append([categoryName, moduleNameList])
+					groupedModuleNameList.append([categoryDict[categoryKey], moduleNameList])
 		# define Ares_var_modules
-		print(groupedModuleNameList)
+		# print(groupedModuleNameList)
 		content = "Ares_var_modules={};".format(groupedModuleNameList)
 		content = re.sub(r"\s+([\W])", r"\1", content)
 		content = re.sub(r"([\W])\s+", r"\1", content)
@@ -128,3 +136,4 @@ if __name__ == "__main__":
 		# print(content)
 		# -- to do: load init.sqf
 		outputStream.write("[]spawn Ares_fnc_init;")
+		print("[ STATUS ]: Packing completed!")
