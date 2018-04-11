@@ -1,1 +1,1 @@
-Curator = Zeus
+Curator = STR_AMAE_ZEUS

@@ -29,8 +29,13 @@ There are three steps. If you know how to get the debug console, just jump to th
 ![](https://github.com/ArmaAchilles/AchillesLite/blob/master/pictures/MissionParams.jpg?raw=true)
 ### Initialize Achillite
 - Place an unit and double click on it.
-- Copy the code from the link: [fullcode.min.sqf](
-https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.min.sqf) (use CTRL+A; CTRL+C; CTRL+V).
+- Copy the code from one of the links (use CTRL+A; CTRL+C; CTRL+V):
+	- English: [fullcode.en.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.en.min.sqf)
+	- German: [fullcode.de.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.de.min.sqf)
+	- French: [fullcode.fr.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.fr.min.sqf)
+	- Russian: [fullcode.ru.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.ru.min.sqf)
+	- Chinese simplified: [fullcode.cn.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.cn.min.sqf)
+	- Japanese: [fullcode.jp.min.sqf](https://raw.githubusercontent.com/ArmaAchilles/AchillesLite/master/fullcode.jp.min.sqf)
 - Paste it in the "Execute" box (see picture below).
 - Pro tip: You can select code you earlier executed with the combo box above the "Execute" box.
 
