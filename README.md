@@ -18,7 +18,7 @@ Check [_Achilles_](https://github.com/ArmaAchilles/AresModAchillesExpansion) for
 
 ## Getting Started
 ### Overview
-There are three steps. If you know how to get the debug console, just jump to the last step.
+There are three steps to get Achillite running. If you know how to get the debug console, just jump to the last step.
 - [Become Admin](#become-admin)
 - [Get Debug Console](#get-debug-console)
 - [Initialize Achillite](#initialize-achillite)
