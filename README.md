@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/ArmaAchilles/AresModAchillesExpansion/blob/master/Pictures/logo/achilles_logo_whiteBackground.png" width="140" alt="AMAE Logo">
+    <img src="https://c1.staticflickr.com/2/1687/25168022601_a6439378c1_b.jpg" width="512" alt="Cancelled">
     <h1 align="center">Achillite (Achilles Lite)</h1>
     <h4 align="center">The Lite Version of Achilles for the Official Public Zeus Game Master Servers</h4>
 </p>
