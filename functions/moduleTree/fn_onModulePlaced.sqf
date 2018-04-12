@@ -13,6 +13,8 @@ if (typeOf _logic == "module_f") then
 	private _path = missionNamespace getVariable ["Ares_var_moduleTreeCurSel", []];
 	private _moduleName = _ctrl tvText _path;
 	Ares_CuratorObjectPlaced_ModuleFunction = _curator getVariable [_moduleName, {}];
+	// Set the module name for the list of placed assets in the Zeus interface.
+	_logic setName _moduleName;
 	// execute the module function
 	[position _logic, Ares_CuratorObjectPlaced_UnitUnderCursor select 1, _logic] spawn 
 	{

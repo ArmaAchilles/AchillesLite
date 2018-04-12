@@ -123,13 +123,21 @@ if __name__ == "__main__":
 					# print(os.path.basename(cfgVehicleModuleFile))
 					content = cfgStream.read()
 					# print(content)
-					categoryKey = re.extract(r"Category\s*=\s*\"([^\W]*)\"", content, re.IGNORECASE)[0]
+					try:
+						categoryKey = re.extract(r"Category\s*=\s*\"([^\W]*)\"", content, re.IGNORECASE)[0]
+					except IndexError:
+						print("[ ERROR  ]: Category not found in {}".format(os.path.basename(cfgVehicleModuleFile)))
+						sys.exit(1)
 					moduleNameList = []
 					for moduleClass, moduleAttributes in re.extract(r"\s+([^\W]+)[\s|\:]+[^\W]+\s+{([\s\S]*?)}", content):
 						if not moduleClass in whitelistedModules:
 							continue
-						moduleName = localizeString(re.extract(r"displayName\s*=\s*\"\$([^\W]*)\"", moduleAttributes, re.IGNORECASE)[0])
-						functionName = re.extract(r"function\s*=\s*\"[^\W]*_fnc([^\W]*)\"", moduleAttributes, re.IGNORECASE)[0]
+						try:
+							moduleName = localizeString(re.extract(r"displayName\s*=\s*\"\$([^\W]*)\"", moduleAttributes, re.IGNORECASE)[0])
+							functionName = re.extract(r"function\s*=\s*\"[^\W]*_fnc([^\W]*)\"", moduleAttributes, re.IGNORECASE)[0]
+						except IndexError:
+							print("[ ERROR  ]: Missing attributes in {}".format(moduleClass))
+							sys.exit(1)
 						with open(moduleFunctionFolder + "/fn" + functionName + ".sqf", "r") as inputStream:
 							functionCode = ppModuleFunctionCode(inputStream.read())
 						moduleNameList.append(moduleName) 

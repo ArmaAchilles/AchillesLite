@@ -1,3 +1,4 @@
+Achilles_Module_Spawn_Carrier
+Ares_Module_Spawn_Submarine
+Ares_Module_Spawn_Trawler
 Ares_Module_Zeus_Hint
-Ares_Module_Zeus_Visibility
-

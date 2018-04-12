@@ -1,1 +1,12 @@
+Achilles_fac_Arsenal = STR_AMAE_ARSENAL
+Achilles_fac_Behaviours = STR_AMAE_AI_BEHAVIOUR
+Achilles_fac_Buildings = STR_AMAE_BUILDINGS
+Achilles_fac_DevTools = STR_AMAE_SAVE_LOAD
+Environment = STR_AMAE_ENVIRONMENT
+Achilles_fac_Equipment = STR_AMAE_EQUIPMENT
+Ordnance = STR_AMAE_FIRE_SUPPORT
+MissionFlow = STR_AMAE_SCENARIO_FLOW
+Achilles_fac_Objects = STR_AMAE_OBJECTS
+Achilles_fac_Player = STR_AMAE_PLAYERS
+Achilles_fac_Spawn = STR_AMAE_SPAWN
 Curator = STR_AMAE_ZEUS
